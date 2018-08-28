@@ -23,8 +23,18 @@ public class Producer {
             properties.load(props);
             producer = new KafkaProducer<>(properties);
         }
-
         try {
+            System.out.println("{\"id\":30,\"album\":\"The Audacity Of Hype\",\"artist\":\"Jello Biafra And The Guantanamo School Of Medicine\",\"name\":\"Three Strikes\",\"genre\":\"Other\"}");
+            System.out.println("{\"album\":\"PSI\",\"artist\":\"Wheres The Pope?\",\"name\":\"Daniel\",\"genre\":\"Other\"}\n");
+            producer.send(new ProducerRecord<String, String>("my-new-topic", "{\"album\":\"PSI\",\"artist\":\"Wheres The Pope?\",\"name\":\"Daniel\",\"genre\":\"Other\"}\n"));
+            producer.send(new ProducerRecord<String, String>("song-feed", "{\"id\":30,\"album\":\"The Audacity Of Hype\",\"artist\":\"Jello Biafra And The Guantanamo School Of Medicine\",\"name\":\"Three Strikes\",\"genre\":\"Other\"}"));
+        } catch (Throwable throwable) {
+            System.out.printf("%s", throwable.getStackTrace());
+        } finally {
+            producer.close();
+        }
+
+        /*try {
             for (int i = 0; i < 1000000; i++) {
                 // send lots of messages
                 producer.send(new ProducerRecord<String, String>(
@@ -43,11 +53,12 @@ public class Producer {
                     System.out.println("Sent msg number " + i);
                 }
             }
-        } catch (Throwable throwable) {
+        }
+        catch (Throwable throwable) {
             System.out.printf("%s", throwable.getStackTrace());
         } finally {
             producer.close();
-        }
+        }*/
 
     }
 }
